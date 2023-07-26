@@ -33,15 +33,24 @@ void ExecuteSync()
 
 async Task ExecuteAsync()
 {
+    Progress<ProgressReportModel> progress = new Progress<ProgressReportModel>();
+    progress.ProgressChanged += ReportProgress;
+
     var watch = Stopwatch.StartNew();
 
-    var results = await DemoMethods.RunDownloadAsync();
+    var results = await DemoMethods.RunDownloadAsync(progress);
     PrintResults(results);
 
     watch.Stop();
     var elapsedMs = watch.ElapsedMilliseconds;
 
     Console.WriteLine($"Total execution time: {elapsedMs}");
+}
+
+void ReportProgress(object? sender, ProgressReportModel e)
+{
+    Console.WriteLine(e.PercentageComplete.ToString());
+    Console.WriteLine(e.SitesDownloaded);
 }
 
 async Task ExecuteParallelAsync()

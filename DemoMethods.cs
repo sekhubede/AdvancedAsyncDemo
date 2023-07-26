@@ -41,6 +41,9 @@ public static class DemoMethods
         {
             WebsiteDataModel results = await Task.Run(() => DownloadWebsite(site));
             output.Add(results);
+
+            report.SitesDownloaded = output;
+            report.PercentageComplete = (output.Count * 100) / websites.Count;
             progress.Report(report);
         }
 
